@@ -1,10 +1,10 @@
 # Ryan Cheevers-Brown
 # NSSA 244 Script 01, Prof. Garrett Arcoraci
 # 2023mar20
-
-DEBUG = True
+# Main Script File
 
 import importlib
+from functions import *
 
 # Import modules
 def check_imports():
@@ -21,66 +21,17 @@ def check_imports():
                 exit(1)
 
 
-def dprint(*args, **kwargs):
-    # Debug print function, prints everything passed in if DEBUG (global var) is True
-    # Used so I don't need to go back and remove prints when done debugging.
-    if DEBUG:
-        print(*args, **kwargs)
-
-
-def _create(vbox: virtualbox.VirtualBox):
-    # Function to create a VM
-    dprint("Entered _create function.")
-    pass
-
-
-def _list(vbox: virtualbox.VirtualBox):
-    # Function to list the available VMs
-    dprint("Entered _list function.")
-    pass
-
-
-def _start(vbox: virtualbox.VirtualBox):
-    dprint("Entered _start function.")
-    # Function to start a VM
-    pass
-
-
-def _stop(vbox: virtualbox.VirtualBox):
-    dprint("Entered _stop function.")
-    # Function to stop a VM
-    pass
-
-
-def _settings(vbox: virtualbox.VirtualBox):
-    dprint("Entered _settings function.")
-    # Function to list the settings of a particular VM
-    pass
-
-
-def _delete(vbox: virtualbox.VirtualBox):
-    dprint("Entered _delete function.")
-    # Function to delete a VM
-    pass
-
-
-def _end():
-    dprint("Entered _end function.")
-    # Function to end the program
-    exit(0)
-
-
 def action():
     # Function to get user input for action
     # Returns the action function to be called
     available_actions = [
-        ["Create a VM", "create", _create],
-        ["List available VMs", "list", _list],
-        ["Start a VM", "start", _start],
-        ["Stop a VM", "stop", _stop],
-        ["List settings of a VM", "settings", _settings],
-        ["Delete a VM", "delete", _delete],
-        ["End program", "end", _end],
+        ["Create a VM", "create", create],
+        ["List available VMs", "list", list],
+        ["Start a VM", "start", start],
+        ["Stop a VM", "stop", stop],
+        ["List settings of a VM", "settings", settings],
+        ["Delete a VM", "delete", delete],
+        ["End program", "end", end],
     ]
     print(f"Please select an action from the list:")
     for i in range(0, len(available_actions)):
@@ -113,10 +64,11 @@ def main():
 
     dprint("Attempting to get user action.")
     uaction = action(vbox)
+    session = virtualbox.Session()
     dprint("Action acquired, returned to main. ")
 
-    dprint("Attempting to execute action.")
-    uaction()
+    dprint(f"Attempting to execute {uaction}.")
+    uaction(vbox, session)
     dprint("Action executed, returned to main.")
 
 
